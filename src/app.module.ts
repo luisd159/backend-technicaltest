@@ -4,17 +4,23 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NoteModule } from './note/note.module';
 import { Note } from './note/entity/note.entity';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const db_option = {
+  host: process.env.HOST,
+  port: parseInt(process.env.DB_PORT),
+  password: process.env.DB_PASSWORD,
+  username: process.env.DB_USERNAME,
+  database: process.env.DB_NAME,
+};
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      password: '1234',
-      username: 'postgres',
+      ...db_option,
       entities: [Note],
-      database: 'notes',
       synchronize: true,
       logging: true,
     }),
